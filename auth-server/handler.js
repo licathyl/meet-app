@@ -21,12 +21,10 @@ const credentials = {
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
   token_uri: "https://oauth2.googleapis.com/token",
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  redirect_uris: ["https://licathyl.github.io/meet-app"],
+  redirect_uris: ["http://127.0.0.1:5500"],
   javascript_origins: [
     "https://licathyl.github.io",
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
+    "http://127.0.0.1:5500"
   ],
 };
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
@@ -41,12 +39,12 @@ const oAuth2Client = new google.auth.OAuth2(
  * Google and be authorized to see your calendar. After loggin in, they'll receive a code
  * as a URL parameter.
  */
-module.exports.getAuthURL = async () => {
+ module.exports.getAuthURL = async () => {
   /**
    *
-   * Scopes array passed to the "scope" option. Any scopes passed must be enabled in the
-   * "OAuth consent screen" settings in the project on Google Console. Also, any passed
-   * scopes are the ones users will see when the consent screen is displayed to them.
+   * Scopes array passed to the `scope` option. Any scopes passed must be enabled in the
+   * "OAuth consent screen" settings in your project on your Google Console. Also, any passed
+   *  scopes are the ones users will see when the consent screen is displayed to them.
    *
    */
   const authUrl = oAuth2Client.generateAuthUrl({
@@ -57,7 +55,7 @@ module.exports.getAuthURL = async () => {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
       authUrl: authUrl,
@@ -77,8 +75,8 @@ module.exports.getAccessToken = async (event) => {
 
   return new Promise((resolve, reject) => {
     /**
-     * Exchange authorization code for access token with a "callback" after the exchange,
-     * The callback in this case is an arrow function with the results as parameters: "err" and "token"
+     *  Exchange authorization code for access token with a “callback” after the exchange,
+     *  The callback in this case is an arrow function with the results as parameters: “err” and “token.”
      */
 
     oAuth2Client.getToken(code, (err, token) => {
@@ -88,46 +86,38 @@ module.exports.getAccessToken = async (event) => {
       return resolve(token);
     });
   })
-    .then((token) => {
-      // Respond with OAuth token
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(token),
-      };
-    })
-    .catch((err) => {
-      // Handle error
-      console.error(err);
-      return {
-        statusCode: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(err),
-      };
-    });
+  .then((token) => {
+    // Respond with OAuth token
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify(token),
+    };
+  })
+  .catch((err) => {
+    // Handle error
+    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify(err),
+    };
+  });
 };
 
 module.exports.getCalendarEvents = async (event) => {
-  // The values used to instantiate the OAuthClient are at the top of the file
   const oAuth2Client = new google.auth.OAuth2(
     client_id,
     client_secret,
     redirect_uris[0]
   );
-
-  const access_token = encodeURIComponent(
-    `${event.pathParameters.access_token}`
-  );
-  oAuth2Client.setCredentials({ access_token });
-
+  const access_token = decodeURIComponent(`${event.pathParameters.access_token}`);
+  oAuth2Client.setCredentials({ access_token })
   return new Promise((resolve, reject) => {
     calendar.events.list(
       {
-        calenderId: calendar_id,
+        calendarId: calendar_id,
         auth: oAuth2Client,
         timeMin: new Date().toISOString(),
         singleEvents: true,
@@ -141,22 +131,19 @@ module.exports.getCalendarEvents = async (event) => {
         }
       }
     );
-  })
-    .then((results) => {
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ events: results.data.items }),
-      };
-    })
-    .catch((err) => {
-      // Handle error
-      console.error(err);
-      return {
-        statusCode: 500,
-        body: JSON.stringify(err),
-      };
-    });
+  }).then((response) => {
+    return {
+      statusCode:200,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ events: response.data.items }),
+    };
+  }).catch((error) => {
+    console.error(error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify(error),
+    };
+  });
 };

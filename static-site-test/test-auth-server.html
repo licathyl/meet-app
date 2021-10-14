@@ -46,7 +46,7 @@
       const getURLElement = document.getElementById("getURL");
       const resultElement = document.getElementById("result");
       const resultLink = document.getElementById("authURL");
-      const getAuthURL = "https://9ferqonw30.execute-api.ca-central-1.amazonaws.com/dev/api/get-auth-url";
+      const getAuthURL = "https://qw32ybzmrg.execute-api.ca-central-1.amazonaws.com/dev/api/get-auth-url";
 
       getURLElement.onclick = function () {
         fetch(getAuthURL)
@@ -66,7 +66,7 @@
       const codeValue = document.getElementById("code");
       const getAccessToken = document.getElementById("getToken");
       const accessTokenElement = document.getElementById("accessToken");
-      const getToken = "https://9ferqonw30.execute-api.ca-central-1.amazonaws.com/dev/api/token";
+      const getToken = "https://qw32ybzmrg.execute-api.ca-central-1.amazonaws.com/dev/api/token";
 
       getAccessToken.onclick = function () {
         let code = codeValue.value;
@@ -87,7 +87,7 @@
 
       const getEvents = document.getElementById("getEvents");
       const events = document.getElementById("events");
-      const getCalendarEvents = "https://9ferqonw30.execute-api.ca-central-1.amazonaws.com/dev/api/get-events";
+      const getCalendarEvents = "https://qw32ybzmrg.execute-api.ca-central-1.amazonaws.com/dev/api/get-events";
 
       getEvents.onclick = function () {
         const { access_token } = JSON.parse(accessTokenElement.innerText);
@@ -100,6 +100,7 @@
             events.innerText = JSON.stringify(json, null, 2);
           });
       };
+
     </script>
   </body>
 </html>
