@@ -21,10 +21,10 @@ const credentials = {
   auth_uri: "https://accounts.google.com/o/oauth2/auth",
   token_uri: "https://oauth2.googleapis.com/token",
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-  redirect_uris: ["http://127.0.0.1:5500"],
+  redirect_uris: ["https://licathyl.github.io/meet-app"],
   javascript_origins: [
     "https://licathyl.github.io",
-    "http://127.0.0.1:5500"
+    "http://127.0.0.1:8080"
   ],
 };
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
@@ -135,7 +135,8 @@ module.exports.getCalendarEvents = async (event) => {
     return {
       statusCode:200,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
+        'Access-Control-Allow-Credentials': 'true'
       },
       body: JSON.stringify({ events: response.data.items }),
     };
