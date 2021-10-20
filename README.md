@@ -71,3 +71,5 @@ This is a serverless, progressive web application (PWA) built with React using a
 ## Project Dependencies
 * Javascript
 * React
+* Jest
+* Enzyme
