@@ -10,8 +10,8 @@ class Event extends Component {
   };
 
   render() {
-    const { event } = this.props;
-
+    let event = this.props.event;
+    
     return (
       <div className='event'>
         <h2 className='eventSummary'>{event.summary}</h2>

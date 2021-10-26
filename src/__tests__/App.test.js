@@ -3,7 +3,6 @@ import { shallow, mount } from "enzyme";
 import App from "../App";
 import EventList from "../EventList";
 import CitySearch from "../CitySearch";
-import Event from "../Event";
 import NumberOfEvents from "../NumberOfEvents";
 import { mockData } from "../mock-data";
 import { extractLocations, getEvents } from "../api";
@@ -21,10 +20,6 @@ describe("<App /> component", () => {
   test("render CitySearch", () => {
     expect(AppWrapper.find(CitySearch)).toHaveLength(1);
   });
-
-  test("render event details", () => {
-    expect(AppWrapper.find(Event)).toHaveLength(1);
-  })
 
   test("render NumberOfEvents", () => {
     expect(AppWrapper.find(NumberOfEvents)).toHaveLength(1);
@@ -60,4 +55,12 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state('events')).toEqual(eventsToShow);
     AppWrapper.unmount();
   })
+  test('get list of all events when user selects "See all cities"', async () => {
+    const AppWrapper = mount(<App />);
+    const suggestionItems = AppWrapper.find(CitySearch).find('.suggestions li');
+    await suggestionItems.at(suggestionItems.length -1).simulate('click');
+    const allEvents = await getEvents();
+    expect(AppWrapper.state('events')).toEqual(allEvents);
+    AppWrapper.unmount();
+  });
 }); 

@@ -24,7 +24,8 @@ const credentials = {
   redirect_uris: ["https://licathyl.github.io/meet-app"],
   javascript_origins: [
     "https://licathyl.github.io",
-    "http://127.0.0.1:8080"
+    "http://127.0.0.1:8080",
+    "http://localhost:3000"
   ],
 };
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
