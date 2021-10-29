@@ -34,6 +34,7 @@ describe("<App /> integration", () => {
     expect(AppWrapper.find(EventList).props().events).toEqual(AppEventsState);
     AppWrapper.unmount();
   });
+
   test('App passes "locations" state as a prop to CitySearch', () => {
     const AppWrapper = mount(<App />);
     const AppLocationsState = AppWrapper.state('locations');
@@ -41,6 +42,7 @@ describe("<App /> integration", () => {
     expect(AppWrapper.find(CitySearch).props().locations).toEqual(AppLocationsState);
     AppWrapper.unmount();
   });
+
   test('get list of events matching the city selected by the user', async () => {
     const AppWrapper = mount(<App />);
     const CitySearchWrapper = AppWrapper.find(CitySearch);
@@ -55,6 +57,7 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state('events')).toEqual(eventsToShow);
     AppWrapper.unmount();
   })
+
   test('get list of all events when user selects "See all cities"', async () => {
     const AppWrapper = mount(<App />);
     const suggestionItems = AppWrapper.find(CitySearch).find('.suggestions li');
@@ -63,4 +66,22 @@ describe("<App /> integration", () => {
     expect(AppWrapper.state('events')).toEqual(allEvents);
     AppWrapper.unmount();
   });
+
+  test('App passes "numberOfEvents" state as a prop to NumberOfEvents', () => {
+    const AppWrapper = mount(<App />);
+    const AppNumberOfEventsState = AppWrapper.state('numberOfEvents');
+    expect(AppNumberOfEventsState).not.toEqual(undefined);
+    expect(AppWrapper.find(NumberOfEvents).props().numberOfEvents).toEqual(32);
+    AppWrapper.unmount();
+  })
+
+  test('App changes "numberOfEvents" state when NumberOfEvents changes', () => {
+    const AppWrapper = mount(<App />);
+    // AppWrapper.setState({ numberOfEvents: 32 });
+    const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents);
+    const inputValue = { target: { value: 9 } };
+    NumberOfEventsWrapper.find('input').simulate('change', inputValue);
+    expect(AppWrapper.state('numberOfEvents')).toEqual(9);
+    AppWrapper.unmount();
+  })
 }); 
