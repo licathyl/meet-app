@@ -12,14 +12,6 @@ class App extends Component {
     locations: [],
     numberOfEvents: 32
   }
-
-  handleInputChanged = (event) => {
-    const number = event.target.value;
-    this.setState({
-      numberOfEvents: number,
-    });
-    this.props.updateEvents(number);
-  };
   
   componentDidMount() {
     this.mounted = true;
@@ -34,16 +26,23 @@ class App extends Component {
     this.mounted = false;
   }
 
-  updateEvents = (location, eventCount) => {
+  updateEvents = (location, eventCount = null) => {
+    let numberOfEvents = this.state.numberOfEvents || eventCount;
+
     getEvents().then((events) => {
-      const locationEvents = (location === 'all') 
+      const locationEvents = 
+        location === 'all'
         ? events 
         : events.filter((event) => event.location === location);
-      const { numberOfEvents } = this.state;
       this.setState({
         events: locationEvents.slice(0, numberOfEvents),
-        numberOfEvents: eventCount,
       });
+    });
+  }
+
+  updateNumberOfEvents = (number) => {
+    this.setState({
+      numberOfEvents: number,
     });
   }
 
@@ -51,7 +50,7 @@ class App extends Component {
     return (
       <div className="App">
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
-        <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateEvents={this.updateEvents} />
+        <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />
         <EventList events={this.state.events} />
       </div>
     );
