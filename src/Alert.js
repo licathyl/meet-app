@@ -4,11 +4,15 @@ class Alert extends Component {
   constructor(props) {
     super(props);
     this.color = null;
+    this.height = null;
+    this.marginTop = null;
   }
 
   getStyle = () => {
     return {
       color: this.color,
+      height: this.height,
+      marginTop: this.marginTop
     };
   }
 
@@ -25,6 +29,8 @@ class InfoAlert extends Alert {
   constructor(props) {
     super(props);
     this.color = 'blue';
+    this.height = '33px';
+    this.marginTop = '0';
   }
 }
 
