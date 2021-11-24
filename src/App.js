@@ -66,6 +66,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Meet</h1>
+        <h2>Let's meet up!</h2>
         <WarningAlert className="WarningAlert" text={this.state.infoText} />
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
         <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />

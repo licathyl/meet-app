@@ -26,15 +26,14 @@ class NumberOfEvents extends Component {
   render() {
     return(
       <div className="numberOfEvents">
-        Number of Events:
-        <label> Search for </label>
+       <label>Number of events:
           <input
             type='text'
             className='eventsNumber'
             value={this.state.numberOfEvents}
             onChange={(e) => this.handleInputChanged(e)}
           />
-        <label>number of events</label>
+        </label>
         <ErrorAlert className='ErrorAlert' text={this.state.infoText} />
       </div>
     );
