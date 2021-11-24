@@ -19,22 +19,21 @@ class App extends Component {
   componentDidMount() {
     this.mounted = true;
     getEvents().then((events) => {
-      if(!navigator.onLine) {
-        if (this.mounted) {
-          this.setState({
-            infoText: 'Warning! No internet connection. The events displayed may not be up to date ', 
+      if (this.mounted) {
+        this.setState({
             events: events.slice(0, this.state.numberOfEvents),
             locations: extractLocations(events) 
           });
-        }
+      } 
+      if (!navigator.onLine) {
+        this.setState({
+          infoText: 'Warning! No internet connection. The events displayed may not be up to date '
+        })
       } else {
-        if (this.mounted) {
-          this.setState({
-            events: events.slice(0, this.state.numberOfEvents),
-            locations: extractLocations(events)
-          });
-        }
-      }
+        this.setState({
+          infoText: '',
+        });
+      };
     });
   }
 
