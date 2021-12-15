@@ -1,42 +1,52 @@
-import React, { Component } from 'react';
-import EventList from './EventList';
-import CitySearch from './CitySearch';
-import NumberOfEvents from './NumberOfEvents';
-import { extractLocations, getEvents } from './api';
-import { WarningAlert } from './Alert';
-import logo from './images/logo.png';
+import React, { Component } from "react";
+import EventList from "./EventList";
+import CitySearch from "./CitySearch";
+import NumberOfEvents from "./NumberOfEvents";
+import WelcomeScreen from "./WelcomeScreen";
+import { getEvents, extractLocations, checkToken, getAccessToken } from "./api";
+import { WarningAlert } from "./Alert";
+import logo from "./images/logo.png";
 
-import './App.css';
-import './nprogress.css';
+import "./App.css";
+import "./nprogress.css";
 
 class App extends Component {
   state = {
     events: [],
     locations: [],
-    currentLocation: 'all', 
+    currentLocation: "all",
     numberOfEvents: 32,
-    infoText: '',
-  }
-  
-  componentDidMount() { 
+    infoText: "",
+    showWelcomeScreen: undefined,
+  };
+
+  async componentDidMount() {
     this.mounted = true;
-    getEvents().then((events) => {
-      if (this.mounted) {
-        this.setState({
+    const accessToken = localStorage.getItem("access_token");
+    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+    if ((code || isTokenValid) && this.mounted) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({
             events: events.slice(0, this.state.numberOfEvents),
-            locations: extractLocations(events) 
+            locations: extractLocations(events),
           });
-      } 
-      if (!navigator.onLine) {
-        this.setState({
-          infoText: 'Warning! No internet connection. The events displayed may not be up to date '
-        })
-      } else {
-        this.setState({
-          infoText: '',
-        });
-      };
-    });
+        }
+        if (!navigator.onLine) {
+          this.setState({
+            infoText:
+              "Warning! No internet connection. The events displayed may not be up to date ",
+          });
+        } else {
+          this.setState({
+            infoText: "",
+          });
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -45,33 +55,52 @@ class App extends Component {
 
   updateEvents = (location) => {
     getEvents().then((events) => {
-      let locationEvents = 
-        location === 'all'
-        ? events 
-        : events.filter((event) => event.location === location);
-      const { numberOfEvents } = this.state; 
+      let locationEvents =
+        location === "all"
+          ? events
+          : events.filter((event) => event.location === location);
+      const { numberOfEvents } = this.state;
       this.setState({
-        events: locationEvents.slice(0, numberOfEvents)
+        events: locationEvents.slice(0, numberOfEvents),
       });
     });
-  }
+  };
 
   updateNumberOfEvents = (eventCount) => {
     const { currentLocation } = this.state;
     this.setState({
-      numberOfEvents: eventCount
+      numberOfEvents: eventCount,
     });
     this.updateEvents(currentLocation, eventCount);
-  }
+  };
 
   render() {
+    if (this.state.showWelcomeScreen === undefined)
+      return <div className="App" />;
+
     return (
       <div className="App">
-        <img src={logo} className="logo" alt="Meet logo that says 'Let's meet up!'" />
+        <img
+          src={logo}
+          className="logo"
+          alt="Meet logo that says 'Let's meet up!'"
+        />
         <WarningAlert className="WarningAlert" text={this.state.infoText} />
-        <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
-        <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />
+        <CitySearch
+          locations={this.state.locations}
+          updateEvents={this.updateEvents}
+        />
+        <NumberOfEvents
+          numberOfEvents={this.state.numberOfEvents}
+          updateNumberOfEvents={this.updateNumberOfEvents}
+        />
         <EventList events={this.state.events} />
+        <WelcomeScreen
+          showWelcomeScreen={this.state.showWelcomeScreen}
+          getAccessToken={() => {
+            getAccessToken();
+          }}
+        />
       </div>
     );
   }
