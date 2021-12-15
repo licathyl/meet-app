@@ -6,6 +6,7 @@ class CitySearch extends Component {
     query: '',
     suggestions: [],
     showSuggestions: false,
+    infoText: '',
   }
 
   handleInputChanged = (event) => {
@@ -23,7 +24,7 @@ class CitySearch extends Component {
       return this.setState({
         query: value,
         suggestions,
-        infoText: ''
+        infoText: '',
       });
     }
   };
@@ -31,9 +32,7 @@ class CitySearch extends Component {
   handleItemClicked = (suggestion) => {
     this.setState({
       query: suggestion,
-      suggestions: [],
       showSuggestions: false,
-      infoText: ''
     });
 
     this.props.updateEvents(suggestion);
@@ -43,10 +42,11 @@ class CitySearch extends Component {
     return (
       <div className="CitySearch">
         <InfoAlert text={this.state.infoText} />
-        <label> Search for a city:
+        <label>Search for a city:
           <input
             type="text"
             className="city"
+            placeholder="e.g. 'Vancouver'"
             value={this.state.query}
             onChange={this.handleInputChanged}
             onFocus={() => { this.setState({ showSuggestions: true }) }}
@@ -59,7 +59,7 @@ class CitySearch extends Component {
               onClick={() => this.handleItemClicked(suggestion)}
             >{suggestion}</li>
           ))}
-          <li key='all' onClick={() => this.handleItemClicked("all")}>
+          <li onClick={() => this.handleItemClicked("all")}>
             <b>See all cities</b>
           </li>
         </ul>
