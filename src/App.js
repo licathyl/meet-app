@@ -4,6 +4,7 @@ import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import { WarningAlert } from './Alert';
+import logo from './images/logo.png';
 
 import './App.css';
 import './nprogress.css';
@@ -12,12 +13,12 @@ class App extends Component {
   state = {
     events: [],
     locations: [],
-    currentLocation: 'all',
+    currentLocation: 'all', 
     numberOfEvents: 32,
     infoText: '',
   }
   
-  componentDidMount() {
+  componentDidMount() { 
     this.mounted = true;
     getEvents().then((events) => {
       if (this.mounted) {
@@ -66,7 +67,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Meet</h1>
+        <img src={logo} className="logo" alt="Meet Logo" />
         <h2>Let's meet up!</h2>
         <WarningAlert className="WarningAlert" text={this.state.infoText} />
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />

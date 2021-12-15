@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from 'react-bootstrap';
 
 class Event extends Component {
   state = {
@@ -19,9 +20,9 @@ class Event extends Component {
         <p className='eventLocation'>@{event.summary} | {event.location}</p>
 
         {this.state.show === false && (
-          <button className='showDetails' onClick={() => this.handleButton()}>
+          <Button variant="primary" className='showDetails' onClick={() => this.handleButton()}>
             Show Details
-          </button>
+          </Button>
         )}
 
         {this.state.show === true && (
@@ -31,9 +32,9 @@ class Event extends Component {
               See details on Google Calendar
             </a> 
             <p className='eventDescription'>{event.description}</p>
-            <button className='hideDetails' onClick={() => this.handleButton()}>
+            <Button variant="primary" className='hideDetails' onClick={() => this.handleButton()}>
               Hide Details
-            </button>
+            </Button>
           </div>
         )}
       </div>
