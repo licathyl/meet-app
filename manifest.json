@@ -21,8 +21,8 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/meet-app/",
+  "start_url": "/meet-app/", 
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#238DD8"
 }
