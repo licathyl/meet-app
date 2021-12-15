@@ -1,12 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:500);
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
 html {
-  background-color: #238DD8;
+  background-color: #EFEFEF;
 }
 
 .App {
   text-align: center;
   padding: 2% 5%;
-  background-color: #238DD8;
+  background-color: #EFEFEF;
+  font-family: 'Merriweather', serif;
 }
 
 .App * {
@@ -34,7 +37,7 @@ input[type="number"] {
   padding: 8px 6px 8px 10px;
   border-radius: 4px;
   outline: none;
-  border: 1px solid #ccc;
+  border: 1px solid #5A49E3;
   font-size: 14px;
   line-height: 20px;
   align-self: center;
@@ -43,12 +46,12 @@ input[type="number"] {
 }
 
 .city {
-  width: 250px;
+  width: 240px;
 }
 
 .CitySearch {
   display: flex;
-  padding: 20px;
+  padding: 0px 0px 10px;
   flex-direction: column;
   flex-basis: 300px;
   max-width: 300px;
@@ -58,11 +61,11 @@ input[type="number"] {
 
 .suggestions {
   width: 250px;
-  position: relative;
+  position: absolute;
   z-index: 2;
   align-self: center;
-  margin: 0;
-  top: 76px;
+  margin: 0px;
+  top: 130px;
   font-size: 14px;
   box-shadow: 10px 10px 16px -12px rgba(0, 0, 0, 0.75);
 }
@@ -83,18 +86,9 @@ input[type="number"] {
   background-color: #bcdcdb;
 }
 
-.event {
-  padding: 10px 10px 35px;
-  margin-bottom: 10px;
-  text-align: left;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  position: relative;
-}
-
 .numberOfEvents {
   display: flex;
-  padding: 20px 20pz 40px;
+  padding: 20px 20px 40px;
   flex-direction: column;
   flex-basis: 300px;
   max-width: 300px;
@@ -106,10 +100,29 @@ input[type="number"] {
   width: 200px;
 }
 
-.details-btn {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+.event {
+  padding: 15px 15px;
+  margin-bottom: 10px;
+  text-align: left;
+  border: 2px solid #5A49E3;
+  border-radius: 4px;
+  position: relative; 
+} h2, 
+  h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.EventItem {
+  margin-bottom: 25px;
+  text-align: left;
+  box-shadow: 10px 10px 16px -12px rgba(0, 0, 0, 0.75);
+}
+
+.showDetails, 
+.hideDetails {
+  position: relative;
+  margin: 5px 0px;
   padding: 5px 8px;
   border-radius: 4px;
   outline: none;

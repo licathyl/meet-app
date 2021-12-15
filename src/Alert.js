@@ -29,7 +29,7 @@ class InfoAlert extends Alert {
   constructor(props) {
     super(props);
     this.color = 'blue';
-    this.height = '33px';
+    this.height = '50px';
     this.marginTop = '0';
   }
 }

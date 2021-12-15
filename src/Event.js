@@ -27,7 +27,7 @@ class Event extends Component {
 
         {this.state.show === true && (
           <div className='EventDetails'>
-            <h3>About the event:</h3>
+            <h4>About the event:</h4>
             <a href={event.htmlLink} rel='noreferrer' target='_blank'>
               See details on Google Calendar
             </a> 

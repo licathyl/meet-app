@@ -67,8 +67,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <img src={logo} className="logo" alt="Meet Logo" />
-        <h2>Let's meet up!</h2>
+        <img src={logo} className="logo" alt="Meet logo that says 'Let's meet up!'" />
         <WarningAlert className="WarningAlert" text={this.state.infoText} />
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
         <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents} />
