@@ -22,7 +22,7 @@ function WelcomeScreen(props) {
               props.getAccessToken();
             }}
             rel="nofollow noopener"
-            className="btn-text"
+            className="google-btn-text"
           >
             <b>Sign in with Google</b>
           </button>
