@@ -4,7 +4,6 @@ import CitySearch from "./CitySearch";
 import NumberOfEvents from "./NumberOfEvents";
 import WelcomeScreen from "./WelcomeScreen";
 import { getEvents, extractLocations, checkToken, getAccessToken } from "./api";
-import { WarningAlert } from "./Alert";
 import logo from "./images/logo.png";
 
 import "./App.css";
@@ -16,7 +15,6 @@ class App extends Component {
     locations: [],
     currentLocation: "all",
     numberOfEvents: 32,
-    infoText: "",
     showWelcomeScreen: undefined,
   };
 
@@ -29,22 +27,11 @@ class App extends Component {
     this.setState({ showWelcomeScreen: !(code || isTokenValid) });
     if ((code || isTokenValid) && this.mounted) {
       getEvents().then((events) => {
-        if (!navigator.onLine) {
-          if (this.mounted) {
-            this.setState({
-              infoText:
-                "Warning! No internet connection. The events displayed may not be up to date ",
-              events: events.slice(0, this.state.numberOfEvents),
-              locations: extractLocations(events),
-            });
-          }
-        } else {
-          if (this.mounted) {
-            this.setState({
-              events: events.slice(0, this.state.numberOfEvents),
-              locations: extractLocations(events),
-            });
-          }
+        if (this.mounted) {
+          this.setState({
+            events: events.slice(0, this.state.numberOfEvents),
+            locations: extractLocations(events),
+          });
         }
       });
     }
@@ -86,7 +73,6 @@ class App extends Component {
           className="logo"
           alt="Meet logo that says 'Let's meet up!'"
         />
-        <WarningAlert className="WarningAlert" text={this.state.infoText} />
         <CitySearch
           locations={this.state.locations}
           updateEvents={this.updateEvents}
