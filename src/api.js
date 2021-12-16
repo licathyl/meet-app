@@ -24,6 +24,35 @@ export const checkToken = async (accessToken) => {
   return result;
 };
 
+const removeQuery = () => {
+  if (window.history.pushState && window.location.pathname) {
+    var newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname;
+    window.history.pushState("", "", newurl);
+  } else {
+    newurl = window.location.protocol + "//" + window.location.host;
+    window.history.pushState("", "", newurl);
+  }
+};
+
+const getToken = async (code) => {
+  const encodeCode = encodeURIComponent(code);
+  const { access_token } = await fetch(
+    `https://9ferqonw30.execute-api.ca-central-1.amazonaws.com/dev/api/token/${encodeCode}`
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .catch((error) => error);
+
+  access_token && localStorage.setItem("access_token", access_token);
+
+  return access_token;
+};
+
 export const getEvents = async () => {
   NProgress.start();
 
@@ -52,35 +81,6 @@ export const getEvents = async () => {
     NProgress.done();
     return result.data.events;
   }
-};
-
-const removeQuery = () => {
-  if (window.history.pushState && window.location.pathname) {
-    var newurl =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      window.location.pathname;
-    window.history.pushState("", "", newurl);
-  } else {
-    newurl = window.location.protocol + "//" + window.location.host;
-    window.history.pushState("", "", newurl);
-  }
-};
-
-const getToken = async (code) => {
-  const encodeCode = encodeURIComponent(code);
-  const { access_token } = await fetch(
-    `https://9ferqonw30.execute-api.ca-central-1.amazonaws.com/dev/api/token/${encodeCode}`
-  )
-    .then((res) => {
-      return res.json();
-    })
-    .catch((error) => error);
-
-  access_token && localStorage.setItem("access_token", access_token);
-
-  return access_token;
 };
 
 export const getAccessToken = async () => {
